@@ -1,3 +1,3 @@
-import utils
-import model_utils
-import tensor_utils
+from . import utils
+from . import model_utils
+from . import tensor_utils
