@@ -1,6 +1,6 @@
 import torch
 import os
-import utils
+import .utils
 
 
 def _ensure_module(model):
