@@ -1,7 +1,6 @@
 import torch
 import os
-import .utils
-
+from persia_pytorch_toolkit import utils
 
 def _ensure_module(model):
     "handle DataParallel etc"
