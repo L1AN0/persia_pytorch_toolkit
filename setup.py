@@ -7,5 +7,5 @@ setup(name='persia_pytorch_toolkit',
       author="Xiangru Lian",
       author_email="admin@mail.xrlian.com",
       license='Proprietary',
-      packages='persia_pytorch_toolkit'
+      packages=['persia_pytorch_toolkit']
 )
