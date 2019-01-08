@@ -6,8 +6,7 @@ class RiemannAUCMeter():
     """
     def __init__(self, num_bins=100000):
         self.num_bins = num_bins
-        self.p_cnt = torch.zeros(self.num_bins, dtype=torch.long)
-        self.n_cnt = torch.zeros(self.num_bins, dtype=torch.long)
+        self.reset()
 
     def add(self, outputs, labels):
         """Outputs should be probabilities from 0 to 1."""
@@ -30,6 +29,10 @@ class RiemannAUCMeter():
             return float(up_sum)/float(p_sum*n_sum)
         except ZeroDivisionError:
             return 0
+
+    def reset(self):
+        self.p_cnt = torch.zeros(self.num_bins, dtype=torch.long)
+        self.n_cnt = torch.zeros(self.num_bins, dtype=torch.long)
 
 
 if __name__ == "__main__":
