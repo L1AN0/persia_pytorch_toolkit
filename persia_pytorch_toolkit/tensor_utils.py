@@ -27,9 +27,9 @@ def to_device(container, device):
 
 def _numpy_dtype_to_torch_dtype(dtype: np.dtype):
     t = dtype.type
-    if t is np.float64:
+    if t is np.float64 or t is np.float32:
         return torch.float
-    elif t is np.int64:
+    elif t is np.int64 or t is np.int32:
         return torch.long
     else:
         raise Exception("Unknown numpy dtype: " + str(t))
