@@ -41,6 +41,8 @@ class RiemannRunningAUCMeter(RiemannAUCMeter):
         super().__init__(num_bins)
         self.buffer_size = buffer_size
         self.buffer = queue.Queue(maxsize=self.buffer_size)
+        self.p_cnt = torch.zeros(self.num_bins, dtype=torch.long)
+        self.n_cnt = torch.zeros(self.num_bins, dtype=torch.long)
 
     def add(self, outputs, labels):
         super().add(outputs, labels)
