@@ -50,6 +50,9 @@ class RiemannRunningAUCMeter(RiemannAUCMeter):
             self.n_cnt -= n_mask
         self.buffer.put((self.p_mask, self.n_mask))
 
+    def reset(self):
+        pass
+
 
 if __name__ == "__main__":
     meter = RiemannAUCMeter()
