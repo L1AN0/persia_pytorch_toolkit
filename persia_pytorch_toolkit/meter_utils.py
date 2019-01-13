@@ -1,4 +1,5 @@
 import torch
+import queue
 
 class RiemannAUCMeter():
     """
@@ -13,10 +14,10 @@ class RiemannAUCMeter():
         indices = torch.clamp(outputs * self.num_bins, min=0, max=self.num_bins - 1).long()
         p_indices = torch.masked_select(indices, labels != 0)
         n_indices = torch.masked_select(indices, labels == 0)
-        p_mask = torch.sparse.FloatTensor(p_indices.unsqueeze(0), torch.ones_like(p_indices), torch.Size([self.num_bins]))
-        n_mask = torch.sparse.FloatTensor(n_indices.unsqueeze(0), torch.ones_like(n_indices), torch.Size([self.num_bins]))
-        self.p_cnt += p_mask
-        self.n_cnt += n_mask
+        self.p_mask = torch.sparse.FloatTensor(p_indices.unsqueeze(0), torch.ones_like(p_indices), torch.Size([self.num_bins]))
+        self.n_mask = torch.sparse.FloatTensor(n_indices.unsqueeze(0), torch.ones_like(n_indices), torch.Size([self.num_bins]))
+        self.p_cnt += self.p_mask
+        self.n_cnt += self.n_mask
 
     def value(self):
         p_sum = self.p_cnt.sum().item()
@@ -33,6 +34,21 @@ class RiemannAUCMeter():
     def reset(self):
         self.p_cnt = torch.zeros(self.num_bins, dtype=torch.long)
         self.n_cnt = torch.zeros(self.num_bins, dtype=torch.long)
+
+
+class RiemannRunningAUCMeter(RiemannAUCMeter):
+    def __init__(self, num_bins=100000, buffer_size=100):
+        super().__init__(num_bins)
+        self.buffer_size = buffer_size
+        self.buffer = queue.Queue(maxsize=self.buffer_size)
+
+    def add(self, outputs, labels):
+        super().add(outputs, labels)
+        if self.buffer.full():
+            p_mask, n_mask = self.buffer.get()
+            self.p_cnt -= p_mask
+            self.n_cnt -= n_mask
+        self.buffer.put((self.p_mask, self.n_mask))
 
 
 if __name__ == "__main__":
