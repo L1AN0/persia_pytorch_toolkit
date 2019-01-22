@@ -72,3 +72,12 @@ def flatten_model_and_grad_tensor(network, verbose=False):
         print("Is grad contiguous memory? ", grad_tensor.is_contiguous())
 
     return tensor, grad_tensor
+
+def model_to_flatten_parameters(network):
+    return torch._utils._flatten_dense_tensors(list(network.parameters()))
+
+def model_to_flatten_gradients(network):
+    return torch._utils._flatten_dense_tensors(list(map(lambda x: x.grad.data, network.parameters())))
+
+def flatten_parameters_to_model(flatten_parameters, model):
+    return torch._utils._unflatten_dense_tensors(flatten_parameters, model.parameters())
