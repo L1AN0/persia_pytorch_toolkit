@@ -29,7 +29,7 @@ def get_model_size(model):
     return params
 
 
-def flatten_model_and_grad_tensor(model, verbose=False):
+def flatten_model_and_grad_tensor(network, verbose=False):
     """
     caveats:
     1. can only be called after first loss.backward (so that grad variables are created)
