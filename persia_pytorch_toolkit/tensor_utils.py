@@ -35,10 +35,10 @@ def _numpy_dtype_to_torch_dtype(dtype: np.dtype):
         raise Exception("Unknown numpy dtype: " + str(t))
 
 
-def to_device_from_numpy(container, device):
+def to_device_from_numpy(container, device, pin_memory=False):
     """The device could be cuda:0 for example."""
     device = torch.device(device)
     return _iterate_over_container(container,
-                                   lambda x: torch.as_tensor(x, dtype=_numpy_dtype_to_torch_dtype(x.dtype), device=device),
+                                   lambda x: torch.as_tensor(x, dtype=_numpy_dtype_to_torch_dtype(x.dtype), device=device).pin_memory() if pin_memory else torch.as_tensor(x, dtype=_numpy_dtype_to_torch_dtype(x.dtype), device=device),
                                    np.ndarray
     )
