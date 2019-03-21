@@ -29,7 +29,7 @@ def to_device(container, device, pin_memory=False, shared_memory=False):
         if shared_memory:
             x.share_memory_()
         return x
-    return _iterate_over_container(container, to_device)
+    return _iterate_over_container(container, do_to_device)
 
 
 def _numpy_dtype_to_torch_dtype(dtype: np.dtype):
