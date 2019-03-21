@@ -19,10 +19,17 @@ def _iterate_over_container(inputs, func, instance_type=torch.Tensor):
         iterate = None
 
 
-def to_device(container, device):
+def to_device(container, device, pin_memory=False, shared_memory=False):
     """The device could be cuda:0 for example."""
     device = torch.device(device)
-    return _iterate_over_container(container, lambda x: x.to(device))
+    def do_to_device(x):
+        x = x.to(device)
+        if pin_memory:
+            x = x.pin_memory()
+        if shared_memory:
+            x.share_memory_()
+        return x
+    return _iterate_over_container(container, to_device)
 
 
 def _numpy_dtype_to_torch_dtype(dtype: np.dtype):

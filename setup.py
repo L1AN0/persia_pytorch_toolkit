@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='persia_pytorch_toolkit',
-      version='0.0.7',
+      version='0.0.8',
       description="Xiangru Lian's toolkit with PyTorch.",
       url='https://github.com/ikzk/persia_pytorch_toolkit',
       author="Xiangru Lian",
