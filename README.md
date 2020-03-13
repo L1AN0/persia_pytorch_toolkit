@@ -1,3 +1,5 @@
+Useful functions for research with PyTorch.
+
 # Usage
 
 ```
